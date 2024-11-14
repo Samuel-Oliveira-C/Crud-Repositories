@@ -23,3 +23,4 @@ public class Colaborador {
     @Column(name = "cargo_colaborador",nullable = false) @Getter @Setter
     private String cargo;
 }
+
