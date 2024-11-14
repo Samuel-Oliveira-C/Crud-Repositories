@@ -1,9 +1,9 @@
 package com.crud.crud_repositories.service;
 
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.crud.crud_repositories.dtos.BookDTO;
 import com.crud.crud_repositories.models.Book;
 import com.crud.crud_repositories.repository.BookRepository;
 
@@ -14,26 +14,31 @@ public class BookService {
     BookRepository bookRepository;
 
     @Transactional
-    public boolean salvarLivro(List<Book> bookEntidade){
+    public boolean salvarLivro(BookDTO bookDTO){
         boolean operacao = false;
-        if(bookEntidade == null){
+        if(bookDTO == null){
             return operacao;
         }
-        else{
-            bookRepository.saveAll(bookEntidade);
-            operacao = true;
-            return operacao;
-        }
+        Book book = new Book();
+        book.setAutor(bookDTO.autor());
+        book.setIsbn(bookDTO.isbn());
+        book.setNome(bookDTO.nome());
+        book.setPaginas(bookDTO.paginas());
+
+        bookRepository.save(book);
+        operacao = true;
+        return operacao;
+    
     }
 
     @Transactional
-    public boolean deletarLivro(List<Book> bookEntidade){
+    public boolean deletarLivro(Book bookEntidade){
         boolean operacao = false;
         if(bookEntidade == null){
             return operacao;
         }
         else{
-            bookRepository.deleteAll(bookEntidade);
+            bookRepository.delete(bookEntidade);
             operacao = true;
             return operacao;
         }

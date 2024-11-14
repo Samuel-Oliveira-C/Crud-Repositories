@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.crud.crud_repositories.dtos.ColaboradorDTO;
 import com.crud.crud_repositories.models.Colaborador;
 import com.crud.crud_repositories.repository.ColaboradorRespository;
 
@@ -14,16 +15,21 @@ public class ColaboradorService {
     ColaboradorRespository colaboradorRespository;
 
     @Transactional
-    public boolean salvarColaborador(List<Colaborador> colaboradorEntidade){
+    public boolean salvarColaborador(ColaboradorDTO colaboradorDTO){
         boolean operacao = false;
-        if(colaboradorEntidade == null){
-            return operacao;
+        if(colaboradorDTO == null){     //Aqui nesses campos o correto seria uma validação para cada campo, ou seja uma função para isso, não um simples if
+            return operacao;            //esse repositorio é somente para estudos por isso não irei fazer.
         }
-        else{
-            colaboradorRespository.saveAll(colaboradorEntidade);
-            operacao = true;
-            return operacao;
-        }
+        Colaborador colaboradorEntidade = new Colaborador();
+        colaboradorEntidade.setCargo(colaboradorDTO.cargo());
+        colaboradorEntidade.setCpf(colaboradorDTO.cpf());
+        colaboradorEntidade.setEmail(colaboradorDTO.email());
+        colaboradorEntidade.setNome(colaboradorDTO.nome());
+
+        colaboradorRespository.save(colaboradorEntidade);
+        operacao = true;
+        return operacao;
+    
     }
 
     @Transactional
