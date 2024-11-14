@@ -3,6 +3,8 @@ package com.crud.crud_repositories.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.crud.crud_repositories.dtos.EmprestimoDTO;
 import com.crud.crud_repositories.models.Emprestimo;
 import com.crud.crud_repositories.repository.EmprestimoRepository;
 
@@ -13,16 +15,23 @@ public class EmprestimoService {
     EmprestimoRepository emprestimoRepository;
 
     @Transactional
-    public boolean salvarEmprestimo(List<Emprestimo> emprestimo){
+    public boolean salvarEmprestimo(EmprestimoDTO emprestimoDTO){
         boolean operacao = false;
-        if(emprestimo == null){
+        if(emprestimoDTO == null){
             return operacao;
         }
-        else{
-            emprestimoRepository.saveAll(emprestimo);
-            operacao = true;
-            return operacao;
-        }
+        Emprestimo emprestimoEntidade = new Emprestimo();
+        emprestimoEntidade.setAluno(emprestimoDTO.aluno());
+        emprestimoEntidade.setBook(emprestimoDTO.book());
+        emprestimoEntidade.setColaborador(emprestimoDTO.colaborador());
+        emprestimoEntidade.setDateDevolucao(emprestimoDTO.dateDevolucao());
+        emprestimoEntidade.setDateEmprestimo(emprestimoDTO.dateEmprestimo());
+        emprestimoEntidade.setId(emprestimoDTO.id());
+
+        emprestimoRepository.save(emprestimoEntidade);
+        operacao = true;
+        return operacao;
+        
     }
 
     @Transactional
