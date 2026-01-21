@@ -23,6 +23,12 @@ public class ClientService {
         return new ClientDTO(clientEntity);
     }
 
+    @Transactional
+    public ClientDTO updateClient(String id, ClientDTO dto){
+        Client entity = repository.getReferenceById(id);
+        return copyEntityToDTO(entity, dto);
+    }
+
     public ClientDTO copyEntityToDTO(Client entity, ClientDTO dto){
         entity.setName(dto.name());
         entity.setEmail(dto.email());

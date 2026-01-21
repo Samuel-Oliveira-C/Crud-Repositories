@@ -12,6 +12,9 @@ import java.net.URI;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+
 
 
 @RestController
@@ -31,4 +34,9 @@ public class ClientController {
         return ResponseEntity.created(uri).body(dto);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<ClientDTO> updateEntity(@PathVariable String id, @RequestBody ClientDTO dto){
+        ClientDTO update = service.updateClient(id, dto);
+        return ResponseEntity.ok().body(update);
+    }
 }
