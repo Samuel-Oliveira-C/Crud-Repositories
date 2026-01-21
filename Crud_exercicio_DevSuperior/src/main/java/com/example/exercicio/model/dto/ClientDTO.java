@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import com.example.exercicio.model.entity.Client;
 
 public record ClientDTO( 
+    String id,
     String name,
     String email,
     Double income,
@@ -13,6 +14,7 @@ public record ClientDTO(
 
     public ClientDTO(Client client){
         this(
+            client.getId(),
             client.getName(),
             client.getEmail(),
             client.getIncome(),
