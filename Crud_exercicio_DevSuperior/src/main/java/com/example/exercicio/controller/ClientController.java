@@ -7,6 +7,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.example.exercicio.model.dto.ClientDTO;
 import com.example.exercicio.services.ClientService;
 
+import jakarta.validation.Valid;
+
 import java.net.URI;
 
 import org.springframework.data.domain.Page;
@@ -34,7 +36,7 @@ public class ClientController {
     }
 
     @PostMapping
-    public ResponseEntity<ClientDTO> createEntity(@RequestBody ClientDTO dto){
+    public ResponseEntity<ClientDTO> createEntity(@Valid @RequestBody ClientDTO dto){
         ClientDTO savedClient = service.saveClient(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
             .buildAndExpand(savedClient.id()).toUri();
@@ -42,7 +44,7 @@ public class ClientController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<ClientDTO> updateEntity(@PathVariable String id, @RequestBody ClientDTO dto){
+    public ResponseEntity<ClientDTO> updateEntity(@Valid @PathVariable String id, @RequestBody ClientDTO dto){
         ClientDTO update = service.updateClient(id, dto);
         return ResponseEntity.ok().body(update);
     }
