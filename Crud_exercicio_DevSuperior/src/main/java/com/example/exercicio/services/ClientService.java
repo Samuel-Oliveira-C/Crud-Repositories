@@ -1,5 +1,8 @@
 package com.example.exercicio.services;
 
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,8 +28,40 @@ public class ClientService {
 
     @Transactional
     public ClientDTO updateClient(String id, ClientDTO dto){
-        Client entity = repository.getReferenceById(id);
-        return copyEntityToDTO(entity, dto);
+        if(!repository.existsById(id)){
+            throw new ResourceNotFound("Entity not found");
+        }
+        else{
+            Client entity = repository.getReferenceById(id);
+            return copyEntityToDTO(entity, dto);
+        }
+    }
+
+    @Transactional
+    public void deleteClient(String id){
+        if(!repository.existsById(id)){
+            throw new ResourceNotFound("Entity not found");
+        }
+        else{
+            repository.deleteById(id);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public ClientDTO findByID(String id){
+        if(!repository.existsById(id)){
+            throw new ResourceNotFound("Entity not found");
+        }
+        else{
+            Client entity = repository.getReferenceById(id);
+            return new ClientDTO(entity);
+        }
+    }
+
+    @Transactional(readOnly = true)
+    public Page<ClientDTO> findAllPaged(Pageable pageable){
+        Page<Client> list = repository.findAll(pageable);
+        return list.map(x -> new ClientDTO(x));
     }
 
     public ClientDTO copyEntityToDTO(Client entity, ClientDTO dto){
